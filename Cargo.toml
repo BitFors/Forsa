@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94.1"
+license = "MIT"
+repository = "https://github.com/BitFors/Forsa"
+homepage = "https://github.com/BitFors/Forsa"
+documentation = "https://docs.rs/forza"
+keywords = ["bittorrent", "bitfors", "p2p", "dht", "torrent"]
+categories = ["network-programming", "parsing"]
+
+[workspace.dependencies]
+#TODO
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[profile.bench]
+lto = true
