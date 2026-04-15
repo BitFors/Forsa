@@ -3,7 +3,7 @@ use indexmap::IndexMap;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Value {
     Integer(i64), // Technically there's no upper limit, i reckon it should fit in 64bits but I'd imagine this'll change in the future..
-    Bytes(Vec<u8>),
+    Bytes(Bytes),
     List(Vec<Self>),
     Dict(IndexMap<Bytes, Self>),
 }
@@ -30,6 +30,51 @@ impl Value {
         I: IntoIterator<Item = V>,
         V: Into<Value>,
     {
-        Value::List(items.into_iter().map(Into::into).collect())
+        Self::List(items.into_iter().map(Into::into).collect())
     }
+
+    //TODO Type checks
+
+    /// Check if int
+    pub fn is_int(&self) -> bool {
+        matches!(self, Self::Integer(_))
+    }
+    /// Check if bytes
+    pub fn is_bytes(&self) -> bool {
+        matches!(self, Self::Bytes(_))
+    }
+    /// Check if list
+    pub fn is_list(&self) -> bool {
+        matches!(self, Self::List(_))
+    }
+    /// Check if dict
+    pub fn is_dict(&self) -> bool {
+        matches!(self, Self::Dict(_))
+    }
+
+    //TODO Accessors
+
+    /// Get as int
+    pub fn as_int(&self) -> Option<i64> {
+        match self {
+            Self::Integer(i) => Some(*i),
+            _ => None,
+        }
+    }
+
+    /// Get as bytes
+    pub fn as_bytes(&self) -> Option<&Bytes> {
+        match self {
+            Self::Bytes(b) => Some(b),
+            _ => None,
+        }
+    }
+
+    /// Get as UTF8 string
+    pub fn as_str(&self) -> Option<&str> {
+        self.as_bytes().and_then(|b| std::str::from_utf8(b).ok())
+    }
+
+    //TODO Helpers
+    //TODO From implementations
 }
