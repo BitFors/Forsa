@@ -1,8 +1,5 @@
-[workspace]
-resolver = "2"
-members = ["crates/*"]
-
-[workspace.package]
+[package]
+name = "forsa"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.94.1"
@@ -12,13 +9,19 @@ homepage = "https://github.com/BitFors/Forsa"
 documentation = "https://docs.rs/forza"
 keywords = ["bittorrent", "bitfors", "p2p", "dht", "torrent"]
 categories = ["network-programming", "parsing"]
+description = "A complete BitTorrent protocol implementation in Rust"
 
-[workspace.dependencies]
-#TODO
+[features]
+default = ["full"]
+full = []
 
-[profile.release]
-lto = true
-codegen-units = 1
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
-[profile.bench]
-lto = true
+[dependencies]
+bytes = "1.11.1"
+indexmap = "2.14.0"
+thiserror = "2.0.18"
+
+[dev-dependencies]
