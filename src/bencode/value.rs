@@ -52,7 +52,7 @@ impl Value {
         matches!(self, Self::Dict(_))
     }
 
-    //TODO Accessors
+    //TODO Slice-based accessors? Maybe?
 
     /// Get as int
     pub fn as_int(&self) -> Option<i64> {
