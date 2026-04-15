@@ -75,6 +75,38 @@ impl Value {
         self.as_bytes().and_then(|b| std::str::from_utf8(b).ok())
     }
 
+    /// Get as list
+    pub fn as_list(&self) -> Option<&Vec<Self>> {
+        match self {
+            Self::List(l) => Some(l),
+            _ => None,
+        }
+    }
+
+    /// Get as mut list
+    pub fn as_list_mut(&mut self) -> Option<&mut Vec<Self>> {
+        match self {
+            Self::List(l) => Some(l),
+            _ => None,
+        }
+    }
+
+    /// Get as dict
+    pub fn as_dict(&self) -> Option<&IndexMap<Bytes, Self>> {
+        match self {
+            Self::Dict(d) => Some(d),
+            _ => None,
+        }
+    }
+
+    /// Get as mut dict
+    pub fn as_dict_mut(&mut self) -> Option<&mut IndexMap<Bytes, Self>> {
+        match self {
+            Self::Dict(d) => Some(d),
+            _ => None,
+        }
+    }
+
     //TODO Helpers
     //TODO From implementations
 }
