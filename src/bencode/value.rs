@@ -1,11 +1,11 @@
 use bytes::Bytes;
-use indexmap::IndexMap;
+use std::collections::BTreeMap;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Value {
     Integer(i64), // Technically there's no upper limit, i reckon it should fit in 64bits but I'd imagine this'll change in the future..
     Bytes(Bytes),
     List(Vec<Self>),
-    Dict(IndexMap<Bytes, Self>),
+    Dict(BTreeMap<Bytes, Self>),
 }
 
 impl Value {
@@ -16,11 +16,10 @@ impl Value {
         K: Into<Bytes>,
         V: Into<Self>,
     {
-        let mut map: IndexMap<Bytes, Self> = items
+        let map: BTreeMap<Bytes, Self> = items
             .into_iter()
             .map(|(k, v)| (k.into(), v.into()))
             .collect();
-        map.sort_keys();
         Self::Dict(map)
     }
 
@@ -32,8 +31,6 @@ impl Value {
     {
         Self::List(items.into_iter().map(Into::into).collect())
     }
-
-    //TODO Type checks
 
     /// Check if int
     pub fn is_int(&self) -> bool {
@@ -92,7 +89,7 @@ impl Value {
     }
 
     /// Get as dict
-    pub fn as_dict(&self) -> Option<&IndexMap<Bytes, Self>> {
+    pub fn as_dict(&self) -> Option<&BTreeMap<Bytes, Self>> {
         match self {
             Self::Dict(d) => Some(d),
             _ => None,
@@ -100,14 +97,12 @@ impl Value {
     }
 
     /// Get as mut dict
-    pub fn as_dict_mut(&mut self) -> Option<&mut IndexMap<Bytes, Self>> {
+    pub fn as_dict_mut(&mut self) -> Option<&mut BTreeMap<Bytes, Self>> {
         match self {
             Self::Dict(d) => Some(d),
             _ => None,
         }
     }
-
-    //TODO Helpers
 
     /// Get value from dict by key
     pub fn get<K: AsRef<[u8]>>(&self, key: K) -> Option<&Self> {
@@ -135,11 +130,10 @@ impl Value {
     }
 
     /// Get nested dict
-    pub fn get_dict<K: AsRef<[u8]>>(&self, key: K) -> Option<&IndexMap<Bytes, Self>> {
+    pub fn get_dict<K: AsRef<[u8]>>(&self, key: K) -> Option<&BTreeMap<Bytes, Self>> {
         self.get(key)?.as_dict()
     }
 }
-//TODO From implementations
 
 impl From<i64> for Value {
     fn from(n: i64) -> Self {
@@ -207,9 +201,8 @@ impl<T: Into<Value>> From<Vec<T>> for Value {
     }
 }
 
-impl From<IndexMap<Bytes, Value>> for Value {
-    fn from(mut m: IndexMap<Bytes, Value>) -> Self {
-        m.sort_keys();
+impl From<BTreeMap<Bytes, Value>> for Value {
+    fn from(mut m: BTreeMap<Bytes, Value>) -> Self {
         Value::Dict(m)
     }
 }
