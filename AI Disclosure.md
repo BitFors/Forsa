@@ -9,7 +9,7 @@ Human written code.
 
 - Autocomplete: JetBrains AI for repetitive accessors and boilerplate. If it outputs garbage, we write it manually.
 - Commit messages: Auto-generated via JetBrains AI using Conventional Commits format. Saves the repo from commit
-  messages written at 2am.
+  messages angrily written at 2am.
 - Research notes: We draft notes on unfamiliar topics (BEPs, protocol specs), then use an LLM to clean them up for
   readability. Sources are required for any AI-added content.
 - Code review: "How can this be better?" prompts. 80% gets discarded as unhelpful.

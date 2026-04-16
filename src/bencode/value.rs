@@ -108,5 +108,108 @@ impl Value {
     }
 
     //TODO Helpers
-    //TODO From implementations
+
+    /// Get value from dict by key
+    pub fn get<K: AsRef<[u8]>>(&self, key: K) -> Option<&Self> {
+        self.as_dict()?.get(key.as_ref())
+    }
+
+    /// Get int from dict
+    pub fn get_int<K: AsRef<[u8]>>(&self, key: K) -> Option<i64> {
+        self.get(key)?.as_int()
+    }
+
+    /// Get bytes from dict
+    pub fn get_bytes<K: AsRef<[u8]>>(&self, key: K) -> Option<&Bytes> {
+        self.get(key)?.as_bytes()
+    }
+
+    /// Get string from dict
+    pub fn get_str<K: AsRef<[u8]>>(&self, key: K) -> Option<&str> {
+        self.get(key)?.as_str()
+    }
+
+    /// Get list from dict
+    pub fn get_list<K: AsRef<[u8]>>(&self, key: K) -> Option<&Vec<Self>> {
+        self.get(key)?.as_list()
+    }
+
+    /// Get nested dict
+    pub fn get_dict<K: AsRef<[u8]>>(&self, key: K) -> Option<&IndexMap<Bytes, Self>> {
+        self.get(key)?.as_dict()
+    }
+}
+//TODO From implementations
+
+impl From<i64> for Value {
+    fn from(n: i64) -> Self {
+        Value::Integer(n)
+    }
+}
+
+impl From<i32> for Value {
+    fn from(n: i32) -> Self {
+        Value::Integer(n as i64)
+    }
+}
+
+impl From<u32> for Value {
+    fn from(n: u32) -> Self {
+        Value::Integer(n as i64)
+    }
+}
+
+impl From<u64> for Value {
+    fn from(n: u64) -> Self {
+        Value::Integer(n as i64)
+    }
+}
+
+impl From<usize> for Value {
+    fn from(n: usize) -> Self {
+        Value::Integer(n as i64)
+    }
+}
+
+impl From<&str> for Value {
+    fn from(s: &str) -> Self {
+        Value::Bytes(Bytes::copy_from_slice(s.as_bytes()))
+    }
+}
+
+impl From<String> for Value {
+    fn from(s: String) -> Self {
+        Value::Bytes(Bytes::from(s))
+    }
+}
+
+impl From<&[u8]> for Value {
+    fn from(b: &[u8]) -> Self {
+        Value::Bytes(Bytes::copy_from_slice(b))
+    }
+}
+
+impl From<Vec<u8>> for Value {
+    fn from(b: Vec<u8>) -> Self {
+        Value::Bytes(Bytes::from(b))
+    }
+}
+
+impl From<Bytes> for Value {
+    fn from(b: Bytes) -> Self {
+        Value::Bytes(b)
+    }
+}
+
+impl<T: Into<Value>> From<Vec<T>> for Value {
+    fn from(v: Vec<T>) -> Self {
+        Value::List(v.into_iter().map(Into::into).collect())
+    }
+}
+
+impl From<IndexMap<Bytes, Value>> for Value {
+    fn from(mut m: IndexMap<Bytes, Value>) -> Self {
+        m.sort_keys();
+        Value::Dict(m)
+    }
 }
