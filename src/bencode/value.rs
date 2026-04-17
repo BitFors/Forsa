@@ -73,7 +73,7 @@ impl Value {
     }
 
     /// Get as list
-    pub fn as_list(&self) -> Option<&Vec<Self>> {
+    pub fn as_list(&self) -> Option<&[Self]> {
         match self {
             Self::List(l) => Some(l),
             _ => None,
