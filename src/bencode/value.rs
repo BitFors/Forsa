@@ -146,19 +146,17 @@ impl From<i32> for Value {
         Value::Integer(n as i64)
     }
 }
-
+// Bencode does not support floats, need to add a warning if passing in floats.
 impl From<u32> for Value {
     fn from(n: u32) -> Self {
         Value::Integer(n as i64)
     }
 }
-
 impl From<u64> for Value {
     fn from(n: u64) -> Self {
         Value::Integer(n as i64)
     }
 }
-
 impl From<usize> for Value {
     fn from(n: usize) -> Self {
         Value::Integer(n as i64)
