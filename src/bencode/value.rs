@@ -125,7 +125,7 @@ impl Value {
     }
 
     /// Get list from dict
-    pub fn get_list<K: AsRef<[u8]>>(&self, key: K) -> Option<&Vec<Self>> {
+    pub fn get_list<K: AsRef<[u8]>>(&self, key: K) -> Option<&[Self]> {
         self.get(key)?.as_list()
     }
 
