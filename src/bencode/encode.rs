@@ -1,6 +1,8 @@
 //TODO
 
 use super::Value;
+use bytes::Bytes;
+use std::collections::BTreeMap;
 
 pub fn encode(value: &Value) -> Vec<u8> {
     //TODO Might change after impl
@@ -30,12 +32,38 @@ impl Encoder {
     pub fn encode(&mut self, value: &Value) {
         match value {
             Value::Integer(n) => self.encode_int(*n),
+            Value::Bytes(b) => self.encode_bytes(b),
+            Value::List(l) => self.encode_list(l),
+            Value::Dict(d) => self.encode_dict(d),
         }
     }
 
     fn encode_int(&mut self, n: i64) {
         self.buf.push(b'i');
         self.push_int(n);
+        self.buf.push(b'e');
+    }
+
+    fn encode_bytes(&mut self, b: &[u8]) {
+        self.push_uint(b.len() as u64);
+        self.buf.push(b':');
+        self.buf.extend_from_slice(b);
+    }
+
+    fn encode_list(&mut self, items: &[Value]) {
+        self.buf.push(b'l');
+        for item in items {
+            self.encode(item);
+        }
+        self.buf.push(b'e');
+    }
+
+    fn encode_dict(&mut self, map: &BTreeMap<Bytes, Value>) {
+        self.buf.push(b'd');
+        for (key, value) in map {
+            self.encode_bytes(key);
+            self.encode(value);
+        }
         self.buf.push(b'e');
     }
 
@@ -61,5 +89,13 @@ impl Encoder {
         } else {
             self.push_uint(n as u64);
         }
+    }
+
+    pub fn into_bytes(self) -> Vec<u8> {
+        self.buf
+    }
+
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.buf
     }
 }
