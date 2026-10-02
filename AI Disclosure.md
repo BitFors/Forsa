@@ -1,5 +1,7 @@
 # How AI is used in this project.
 
+When submitting an issue or PR, our eyes should not be the first human eyes to actually read it.
+
 We use AI as a tool. It's not there to replace humans, good judgment, or standards.
 The bulk of AI in this project stems from assisted research (available in our obsidian docs), and from autocompletion.
 Below is a bit more info on each aspect, or just stop after the TLDR.
@@ -9,10 +11,10 @@ Human written code.
 
 - Autocomplete: JetBrains AI for repetitive accessors and boilerplate. If it outputs garbage, we write it manually.
 - Commit messages: Auto-generated via JetBrains AI using Conventional Commits format. Saves the repo from commit
-  messages angrily written at 2am.
+  messages angrily written at 2am (sometimes).
 - Research notes: We draft notes on unfamiliar topics (BEPs, protocol specs), then use an LLM to clean them up for
   readability. Sources are required for any AI-added content.
-- Code review: "How can this be better?" prompts. 80% gets discarded as unhelpful.
+- Code review: "How can this be better?" prompts. 80% gets discarded as unhelpful, irrelevant, or out of scope.
 
 ## Autocompletion
 
@@ -42,15 +44,12 @@ chore: update dependencies
 ## Research
 
 For ideas and concepts unfamiliar to us, we will normally create an obsidian note or folder to house any research we do.
-As an example, in our
-Forsa crate, the notes largely pertain to the Bittorrent protocol. Once we do our notes, it gets fed into whatever model
-I have free that week to convert it
-into notes other people can actually read. It also gets asked to check if anything's been missed, if anything needs
-improving, etc. I'm sure there's better prompts
-to use for that, however, I'm not buying a Udemy course on how to "optimize my prompts".
+As an example, in our Forsa crate, the notes largely pertain to the Bittorrent protocol. Once we do our notes, it gets fed into whatever model
+I have free that week to convert it into notes other people can actually read. It also gets asked to check if anything's been missed, if anything needs
+improving, etc. I'm sure there's better prompts to use for that, however, I'm not buying a Udemy course on how to "optimise my prompts".
 We include sources where possible, where AI has added something it is a requirement for there to be a source (
 eg, Wikipedia, a link to the BEP proposal). We sometimes explore architectural design in this research, and we normally
-use this as a "base" when starting a new feature. It'll likely look much different in practice compared to what are in
+use this as a "base" when starting a new feature. It'll likely look much different in practice compared to what is in
 the notes.
 
 You can find the relevant Obsidian notes in the root Obsidian folder.
@@ -69,4 +68,4 @@ when making a commit, which is largely the same - mostly discarded.
 
 As far as specific model usage goes, it's just Gemini Flash (or whatever the Jetbrains default is that week). I'm not
 arsed if it doesn't pick up on some hyper specific optimisation I've missed, it's just there to catch the obvious when
-I'm 7 hours deep into something that shouldn't take more than 1 hour.
+I'm 7 hours deep into something that shouldn't take more than 1 hour. Occasionally I'll have it do a whole project review (when I get free credits) which tends to give slightly better advice, but most of it is still discarded.
